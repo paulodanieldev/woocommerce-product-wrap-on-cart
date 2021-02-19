@@ -1,0 +1,14 @@
+/**/
+.ic_wrap_alerta {
+    padding: 5px;
+    border: 1px solid gray !important;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 1.5 !important;
+}
+.ic_wrap_error {
+    border-color: #e8273b !important;
+    color: #FFF !important;
+    background-color: #ed5565 !important;
+}
