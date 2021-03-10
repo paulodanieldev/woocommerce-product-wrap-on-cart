@@ -12,16 +12,20 @@ class WC_Methods_PWC extends WC_Integration {
 	
 	private $pwc_category_name         = null;
 	public function __construct() {
-		$this->id                 	        = 'pwc';
-		$this->pwc_category_name			    = $this->get_option( 'pwc_category_name' );
-        $this->pwc_acf_wrap_field_name		    = $this->get_option( 'pwc_acf_wrap_field_name' );
-        $this->pwc_wrap_field_title	            = $this->get_option( 'pwc_wrap_field_title' );
-        $this->pwc_show_gifted_field	        = $this->get_option( 'pwc_show_gifted_field' );
-		$this->pwc_gifted_field_title	        = $this->get_option( 'pwc_gifted_field_title' );
-		$this->pwc_show_sender_field	        = $this->get_option( 'pwc_show_sender_field' );
-		$this->pwc_sender_field_title	        = $this->get_option( 'pwc_sender_field_title' );
-		$this->pwc_out_of_stock_message_text	= $this->get_option( 'pwc_out_of_stock_message_text' );
-        $this->pwc_wrapless_message_text	    = $this->get_option( 'pwc_wrapless_message_text' );
+		$this->id                 	                = 'pwc';
+		$this->pwc_category_name			        = $this->get_option( 'pwc_category_name' );
+        $this->pwc_acf_wrap_field_name		        = $this->get_option( 'pwc_acf_wrap_field_name' );
+        $this->pwc_wrap_field_header_title          = $this->get_option( 'pwc_wrap_field_header_title' );
+        $this->pwc_wrap_field_title	                = $this->get_option( 'pwc_wrap_field_title' );
+        $this->pwc_show_gifted_field	            = $this->get_option( 'pwc_show_gifted_field' );
+		$this->pwc_gifted_field_title	            = $this->get_option( 'pwc_gifted_field_title' );
+		$this->pwc_show_sender_field	            = $this->get_option( 'pwc_show_sender_field' );
+		$this->pwc_sender_field_title	            = $this->get_option( 'pwc_sender_field_title' );
+		$this->pwc_out_of_stock_message_text	    = $this->get_option( 'pwc_out_of_stock_message_text' );
+        $this->pwc_wrapless_message_text	        = $this->get_option( 'pwc_wrapless_message_text' );
+        $this->pwc_hide_wrap_from_cart              = $this->get_option( 'pwc_hide_wrap_from_cart' );
+        $this->pwc_show_wrap_details_on_checkout    = $this->get_option( 'pwc_show_wrap_details_on_checkout' );
+        
     }
     
     public function get_pwc_category_name(){
@@ -30,6 +34,10 @@ class WC_Methods_PWC extends WC_Integration {
 
     public function get_pwc_acf_wrap_field_name(){
         return $this->pwc_acf_wrap_field_name;
+    }
+    
+    public function get_pwc_wrap_field_header_title(){
+        return $this->pwc_wrap_field_header_title;
     }
 
     public function get_pwc_wrap_field_title(){
@@ -59,16 +67,30 @@ class WC_Methods_PWC extends WC_Integration {
     public function get_pwc_wrapless_message_text(){
         return $this->pwc_wrapless_message_text;
     }
+  
+    public function get_pwc_hide_wrap_from_cart(){
+        return $this->pwc_hide_wrap_from_cart;
+    }
 
     public function is_wrap_product($atts){
         $result = false;
-        $product_cats = wp_get_post_terms( $atts['product_id'], 'product_cat' );
-        $single_cat = array_shift( $product_cats );
-
-        if ($single_cat->slug == $this->pwc_category_name) {
-        	$result = true;
+        if (!empty($this->pwc_hide_wrap_from_cart)){
+            if ($this->pwc_hide_wrap_from_cart == 'yes'){
+                $product_cats = wp_get_post_terms( $atts['product_id'], 'product_cat' );
+                $single_cat = array_shift( $product_cats );
+                
+                if ($single_cat->slug == $this->pwc_category_name) {
+                    $result = true;
+                }
+            }
         }
         return $result;
+    }
+
+    public function wrap_cart_header($atts){
+        $titulo_cabecalho = !empty($this->pwc_wrap_field_header_title) ? $this->pwc_wrap_field_header_title : __('Adicionar Embalagem', 'pwc-integration');
+        $html = '<th class="ic-product-wrap">'. $titulo_cabecalho .'</th>';
+        return $html;
     }
 
     public function wrap_checkbox_field($atts){
@@ -107,7 +129,7 @@ class WC_Methods_PWC extends WC_Integration {
                                                 Lembre-se que a Nota Fiscal irá sempre junto com o nome de quem comprou', 'pwc-integration' ) . '."><i class="fa fa-info-circle"></i></span>
                                             </div>
                                             <div class="gift_input" style="padding-left: 10px; width: auto;">
-                                                <input type="text" maxlength="20" onkeyup="sanitizeGiftInput(this)" name="cart[%s][lorem_name]" value="%s" class="url text lorem_name" placeholder="Digite o nome" />
+                                                <input type="text" maxlength="20" onkeyup="ic_sanitize_wrap_input(this)" name="cart[%s][lorem_name]" value="%s" class="url text lorem_name" placeholder="Digite o nome" />
                                             </div>', $cart_item_key, esc_attr( isset( $elements[$cart_item_key]['lorem_name'] ) ? $elements[$cart_item_key]['lorem_name'] : '' ) );
                     }
                     if ($this->pwc_show_sender_field == "yes"){
@@ -116,7 +138,7 @@ class WC_Methods_PWC extends WC_Integration {
                                                 '. $nome_remetente .'  
                                             </div>
                                             <div class="gift_input" style="padding-left: 10px; width: auto;">
-                                                <input type="text" maxlength="20" onkeyup="sanitizeGiftInput(this)" name="cart[%s][lorem_rem_name]" value="%s" class="url text lorem_rem_name" placeholder="Digite o nome" />
+                                                <input type="text" maxlength="20" onkeyup="ic_sanitize_wrap_input(this)" name="cart[%s][lorem_rem_name]" value="%s" class="url text lorem_rem_name" placeholder="Digite o nome" />
                                             </div>', $cart_item_key, esc_attr( isset( $elements[$cart_item_key]['lorem_rem_name'] ) ? $elements[$cart_item_key]['lorem_rem_name'] : '' ) );
                     }
                     $html .= '</div>';
@@ -140,6 +162,69 @@ class WC_Methods_PWC extends WC_Integration {
           WC()->session->set( 'my_lorem_price', $_REQUEST['cart'] );
         }
       }
+    }
+
+    public function display_wrap_fields_text_on_cart( $item_data, $cart_item ) {
+        if (is_checkout()){
+            if ($this->pwc_show_wrap_details_on_checkout == 'yes'){
+                $elements = WC()->session->get( 'my_lorem_price');
+                $checked = esc_attr( isset( $elements[$cart_item['key']]['lorem'] ) ? 'checked' : '' );
+                $name = esc_attr(isset($elements[$cart_item['key']]['lorem_name']) ? $elements[$cart_item['key']]['lorem_name'] : '');
+                $rem_name = esc_attr(isset($elements[$cart_item['key']]['lorem_rem_name']) ? $elements[$cart_item['key']]['lorem_rem_name'] : '');
+
+                if ( !empty( $checked ) ) {
+                    $item_data[] = array(
+                        'key'     => __( 'Embrulhar para presente', 'pwc-integration' ),
+                        'value'   => wc_clean('Sim'),
+                        'display' => '',
+                    );
+                    // verifica se exibe informações do presenteado
+                    if ($this->pwc_show_gifted_field == "yes"){
+                        if ( !empty( $name ) ) {
+                            $item_data[] = array(
+                            'key'     => __( 'Presentado', 'pwc-integration' ),
+                            'value'   => wc_clean($name),
+                            'display' => '',
+                            );
+                        }
+                    }
+                    if ($this->pwc_show_sender_field == "yes"){
+                        if ( !empty( $rem_name ) ) {
+                            $item_data[] = array(
+                            'key'     => __( 'Remetente', 'pwc-integration' ),
+                            'value'   => wc_clean($rem_name),
+                            'display' => '',
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        return $item_data;
+    }
+
+    public function add_wrap_field_text_to_order_items( $item, $cart_item_key, $values, $order ) {
+        
+        $elements = WC()->session->get('my_lorem_price');
+        $checked = esc_attr( isset( $elements[$cart_item_key]['lorem'] ) ? 'checked' : '' );
+        $name = esc_attr( isset( $elements[$cart_item_key]['lorem_name'] ) ? $elements[$cart_item_key]['lorem_name'] : '' );
+        $rem_name = esc_attr( isset( $elements[$cart_item_key]['lorem_rem_name'] ) ? $elements[$cart_item_key]['lorem_rem_name'] : '' );
+
+        if ( empty( $checked ) ) {
+            return;
+        }
+        if ($checked) {
+            $item->add_meta_data( __( 'Embalagem para presente', 'pwc-integration' ), 'Sim' );
+        }
+        if ($name){
+            $item->add_meta_data( __( 'Presenteado', 'pwc-integration' ), $name );
+        }
+        if ($rem_name){
+            $item->add_meta_data( __( 'Remetente', 'pwc-integration' ), $rem_name );
+        }
+
+        $order->add_order_note($item->get_name()." - Embalagem Adicionada");
+        
     }
 
 }

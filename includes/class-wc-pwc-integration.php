@@ -13,16 +13,17 @@ class WC_Integration_PWC extends WC_Integration {
 	public function __construct() {
 		global $woocommerce;
 		$this->id                 = 'pwc';
-		$this->method_title       = __( 'Wrap like product on cart', 'pwc-integration' );
-		$this->method_description = __( 'The following options are used to configure the plugin', 'pwc-integration' );
+		$this->method_title       = __( 'InCuca Tech - Embalagem como produto', 'pwc-integration' );
+		$this->method_description = __( 'Os campos abaixo são utilizados para configurar o plugin', 'pwc-integration' );
 		// Load the settings.
 		$this->init_form_fields();
 		$this->init_settings();
 		// Define user set variables.
-		$this->pwc_category_name	= $this->get_option( 'pwc_category_name' );
+		$this->pwc_category_name		= $this->get_option( 'pwc_category_name' );
 		$this->pwc_acf_wrap_field_name	= $this->get_option( 'pwc_acf_wrap_field_name' );
 
-		$this->pwc_wrap_field_title	= $this->get_option( 'pwc_wrap_field_title' );
+		$this->pwc_wrap_field_header_title	= $this->get_option( 'pwc_wrap_field_header_title' );
+		$this->pwc_wrap_field_title			= $this->get_option( 'pwc_wrap_field_title' );
 
 		$this->pwc_show_gifted_field	= $this->get_option( 'pwc_show_gifted_field' );
 		$this->pwc_gifted_field_title	= $this->get_option( 'pwc_gifted_field_title' );
@@ -32,6 +33,11 @@ class WC_Integration_PWC extends WC_Integration {
 
 		$this->pwc_out_of_stock_message_text	= $this->get_option( 'pwc_out_of_stock_message_text' );
 		$this->pwc_wrapless_message_text	= $this->get_option( 'pwc_wrapless_message_text' );
+
+		$this->pwc_hide_wrap_from_cart	= $this->get_option( 'pwc_hide_wrap_from_cart' );
+		
+		$this->pwc_show_wrap_details_on_checkout	= $this->get_option( 'pwc_show_wrap_details_on_checkout' );
+		
 
 		// Actions.
 		add_action('woocommerce_update_options_integration_' . $this->id, array($this, 'process_admin_options'));
@@ -55,6 +61,14 @@ class WC_Integration_PWC extends WC_Integration {
 				'label'             => __( 'Nome do campo de embalagens em ACF', 'pwc-integration' ),
 				'default'           => '',
 				'description'       => __( 'Entre com o nome do campo de embalagens criado em Advance Custon Fields (Campos Personalizados).', 'pwc-integration' ),
+				'desc_tip'          => true
+			),
+			'pwc_wrap_field_header_title' => array(
+				'title'             => __( 'Titulo do cabeçalho do checkbox de embalagem', 'pwc-integration' ),
+				'type'              => 'text',
+				'label'             => __( 'Titulo do cabeçalho do checkbox de embalagem', 'pwc-integration' ),
+				'default'           => '',
+				'description'       => __( 'Entre com o Titulo do cabeçalho do campo de embalagens do carrinho, utilize a variavel {wrap_name} para exibir o nome da embalagem e {wrap_price} para exibir o valor da mesma.', 'pwc-integration' ),
 				'desc_tip'          => true
 			),
 			'pwc_wrap_field_title' => array(
@@ -115,6 +129,25 @@ class WC_Integration_PWC extends WC_Integration {
 				'description'       => __( 'Entre com o texto da mensagem que aparecerá quando o produto não possuir embalagem configurada', 'pwc-integration' ),
 				'desc_tip'          => true
 			),
+			'pwc_hide_wrap_from_cart' => array(
+				'title'             => __( 'Ocultar produto embalagem do carrinho', 'pwc-integration' ),
+				'type'              => 'checkbox',
+				'label'             => __( 'sim', 'pwc-integration' ),
+				'class'				=> 'ic_pwc_hide_wrap_from_cart',
+				'default'           => '',
+				'description'       => __( 'Se marcado, oculta os produtos do tipo embalagem do carrinho.', 'pwc-integration' ),
+				'desc_tip'          => true
+			),
+			'pwc_show_wrap_details_on_checkout' => array(
+				'title'             => __( 'Exibir detalhes da em balagem no checkout?', 'pwc-integration' ),
+				'type'              => 'checkbox',
+				'label'             => __( 'sim', 'pwc-integration' ),
+				'class'				=> 'ic_pwc_show_wrap_details_on_checkout',
+				'default'           => '',
+				'description'       => __( 'Se marcado, exibe os campos de embalagem como remetente e destinatários no checkout.', 'pwc-integration' ),
+				'desc_tip'          => true
+			),
+			
 		);
 	}
 

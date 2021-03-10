@@ -3,7 +3,7 @@
 /**
  * Plugin Name: InCuca Tech - Woocommerce product wrap on cart
  * Plugin URI: https://github.com/InCuca/woocommerce-product-wrap-on-cart
- * Description: Adds an option to the cart to check if you want to add a product wrap to your purchase.
+ * Description: Adiciona uma opção ao carrinho para adicionar uma embalagem como produto fisico, permitindo o controle de estoque e inclusão do mesmo ao pedido final.
  * Author: InCuca Tech
  * Author URI: https://incuca.net
  * Version: 1.0.0
