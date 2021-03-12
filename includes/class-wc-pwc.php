@@ -332,7 +332,9 @@ class WC_PWC {
                     //data = JSON.parse(data);
                     console.log(data);
                     let wrap_elelemt = document.getElementsByName("cart["+ item_key +"][lorem]");
-                    wrap_elelemt[0].checked = false;
+                    if(wrap_elelemt[0]){
+                        wrap_elelemt[0].checked = false;
+                    }
                     jQuery("[name='update_cart']").prop("disabled", false);
                     jQuery("[name='update_cart']").trigger("click");
                 })
