@@ -281,9 +281,9 @@ class WC_PWC {
             ?>
             <script>
             function ic_add_wrap_to_cart(wrap_id, wrap_el){
-                //jQuery.blockUI({message: null, overlayCSS: { backgroundColor: '#fff'} });
+                jQuery.blockUI({message: null, overlayCSS: { backgroundColor: '#fff'} });
                 console.log('adiciona');
-                jQuery.post('/lojateste.com.br/wp-admin/admin-ajax.php', {
+                jQuery.post('/wp-admin/admin-ajax.php', {
                 action: 'woocommerce_ajax_add_to_cart',
                 ic_product_id: wrap_id
                 }, function(data){
@@ -291,7 +291,7 @@ class WC_PWC {
                     data = JSON.parse(data);
                     console.log(data.response);
                     // console.log(data, data.response, typeof data.response);
-                    // jQuery.unblockUI();
+                    jQuery.unblockUI();
                     if (data.response){
                         jQuery("[name='update_cart']").prop("disabled", false);
                         jQuery("[name='update_cart']").trigger("click");
@@ -305,10 +305,10 @@ class WC_PWC {
             }
 
             function ic_remove_wrap_from_cart(wrap_id){
-                //jQuery.blockUI({message: null, overlayCSS: { backgroundColor: '#fff'} });
+                jQuery.blockUI({message: null, overlayCSS: { backgroundColor: '#fff'} });
                 console.log('remove');
                 
-                jQuery.post('/lojateste.com.br/wp-admin/admin-ajax.php', {
+                jQuery.post('/wp-admin/admin-ajax.php', {
                 action: 'woocommerce_ajax_remove_from_cart',
                 ic_product_id: wrap_id
                 }, function(data){
@@ -316,16 +316,16 @@ class WC_PWC {
                     data = JSON.parse(data);
                     console.log(data.response);
                     // console.log(data, data.response, typeof data.response);
-                    //jQuery.unblockUI();
+                    jQuery.unblockUI();
                     jQuery("[name='update_cart']").prop("disabled", false);
                     jQuery("[name='update_cart']").trigger("click");
                 })
             }
 
             function ic_remove_wrap_from_cart2(item_key){
-                //jQuery.blockUI({message: null, overlayCSS: { backgroundColor: '#fff'} });
+                jQuery.blockUI({message: null, overlayCSS: { backgroundColor: '#fff'} });
                 console.log('remove');
-                jQuery.post('/lojateste.com.br/wp-admin/admin-ajax.php', {
+                jQuery.post('/wp-admin/admin-ajax.php', {
                 action: 'woocommerce_ajax_remove_from_cart2',
                 cart_item_key: item_key
                 }, function(data){
@@ -335,6 +335,7 @@ class WC_PWC {
                     if(wrap_elelemt[0]){
                         wrap_elelemt[0].checked = false;
                     }
+                    jQuery.unblockUI();
                     jQuery("[name='update_cart']").prop("disabled", false);
                     jQuery("[name='update_cart']").trigger("click");
                 })

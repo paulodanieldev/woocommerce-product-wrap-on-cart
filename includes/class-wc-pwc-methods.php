@@ -182,7 +182,7 @@ class WC_Methods_PWC extends WC_Integration {
                     if ($this->pwc_show_gifted_field == "yes"){
                         if ( !empty( $name ) ) {
                             $item_data[] = array(
-                            'key'     => __( 'Presentado', 'pwc-integration' ),
+                            'key'     => __( 'Presenteado', 'pwc-integration' ),
                             'value'   => wc_clean($name),
                             'display' => '',
                             );
