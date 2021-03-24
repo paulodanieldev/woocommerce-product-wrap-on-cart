@@ -108,12 +108,12 @@ class WC_Methods_PWC extends WC_Integration {
                 $product_wrap_value_html = $product_wrap_obj->get_price_html() ?? 'R$0,00';
                 $product_wrap_id = $product_wrap_obj->get_id();   
                 //tooltip doc - https://gist.github.com/gdometrics/fc5e03a6f05845746a18
-                $tooltip_wrap_img = '<span class="ctooltip" data-avia-tooltip-class="av-tt-pos-right av-tt-align-centered" data-avia-tooltip-position="right" data-avia-tooltip-alignment="left" data-avia-tooltip="<img src=&quot;'. get_the_post_thumbnail_url($product_wrap_id) .'&quot;> ">
+                $tooltip_wrap_img = '<span style="padding: 5px 10px;" class="ctooltip" data-avia-tooltip-class="av-tt-pos-right av-tt-align-centered" data-avia-tooltip-position="right" data-avia-tooltip-alignment="left" data-avia-tooltip="<img src=&quot;'. get_the_post_thumbnail_url($product_wrap_id) .'&quot;> ">
                                         <i class="fa fa-picture-o"></i>
                                     </span>';
                 $titulo_checkbox = !empty($this->pwc_wrap_field_title) ? str_replace(["{wrap_name}", "{wrap_price}"], [$product_wrap_title, $product_wrap_value_html], $this->pwc_wrap_field_title) : 'Adicionar '.$product_wrap_title.' por '.$product_wrap_value_html;
                 $html = '<div class="ic_wrap_alerta ic_wrap_error" style="display:none" id="'.$cart_item_key.'">Embalagem com estoque insuficiente.</div>';
-                $html .= sprintf( '<div class="lorem wrap_select"><input type="checkbox" name="cart[%s][lorem]" id="'. $product_wrap_id .'" value="%s" size="4"  class="ic-wrap-checkbox" onchange="ic_change_wrap_checkbox(this)" %s /> '.$titulo_checkbox.' '.$tooltip_wrap_img.'</div>', $cart_item_key, esc_attr( $values['url'] ), esc_attr( isset( $elements[$cart_item_key]['lorem'] ) ? 'checked' : '' ) );
+                $html .= sprintf( '<div class="lorem wrap_select"><input style="width: 20px !important;" type="checkbox" name="cart[%s][lorem]" id="'. $product_wrap_id .'" value="%s" size="4"  class="ic-wrap-checkbox" onchange="ic_change_wrap_checkbox(this)" %s />'.$tooltip_wrap_img.' '.$titulo_checkbox.'</div>', $cart_item_key, esc_attr( $values['url'] ), esc_attr( isset( $elements[$cart_item_key]['lorem'] ) ? 'checked' : '' ) );
                 // $html .= '<div> <button type="button" onclick="ic_add_wrap_to_cart('. $product_wrap_id .')">adiciona!</button> <button type="button" onclick="ic_remove_wrap_from_cart('. $product_wrap_id .')">remove</button> </div>';
                 // $html = sprintf( '<div class="lorem wrap_select"><input type="checkbox" name="cart[%s][lorem]" value="%s" size="4"  class="url text" %s /> Embalar para presente: R$'.$wrapCost.'</div>', $cart_item_key, esc_attr( $values['url'] ), esc_attr( isset( $elements[$cart_item_key]['lorem'] ) ? 'checked' : '' ) );
                 

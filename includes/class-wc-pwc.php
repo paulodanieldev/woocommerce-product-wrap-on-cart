@@ -236,9 +236,9 @@ class WC_PWC {
             }
 
             $new_lorem_price = $lorem_price;
-            var_dump($new_lorem_price);
+            //var_dump($new_lorem_price);
             unset($new_lorem_price[ $cart_item_key ]['lorem']);
-            var_dump($new_lorem_price);
+            //var_dump($new_lorem_price);
             WC()->session->set( 'my_lorem_price', $new_lorem_price);
             
         }else{
@@ -282,14 +282,14 @@ class WC_PWC {
             <script>
             function ic_add_wrap_to_cart(wrap_id, wrap_el){
                 jQuery.blockUI({message: null, overlayCSS: { backgroundColor: '#fff'} });
-                console.log('adiciona');
+                // console.log('adiciona');
                 jQuery.post('/wp-admin/admin-ajax.php', {
                 action: 'woocommerce_ajax_add_to_cart',
                 ic_product_id: wrap_id
                 }, function(data){
                     // console.log(data);
                     data = JSON.parse(data);
-                    console.log(data.response);
+                    // console.log(data.response);
                     // console.log(data, data.response, typeof data.response);
                     jQuery.unblockUI();
                     if (data.response){
@@ -306,7 +306,7 @@ class WC_PWC {
 
             function ic_remove_wrap_from_cart(wrap_id){
                 jQuery.blockUI({message: null, overlayCSS: { backgroundColor: '#fff'} });
-                console.log('remove');
+                // console.log('remove');
                 
                 jQuery.post('/wp-admin/admin-ajax.php', {
                 action: 'woocommerce_ajax_remove_from_cart',
@@ -314,7 +314,7 @@ class WC_PWC {
                 }, function(data){
                     // console.log(data);
                     data = JSON.parse(data);
-                    console.log(data.response);
+                    // console.log(data.response);
                     // console.log(data, data.response, typeof data.response);
                     jQuery.unblockUI();
                     jQuery("[name='update_cart']").prop("disabled", false);
@@ -324,13 +324,13 @@ class WC_PWC {
 
             function ic_remove_wrap_from_cart2(item_key){
                 jQuery.blockUI({message: null, overlayCSS: { backgroundColor: '#fff'} });
-                console.log('remove');
+                // console.log('remove');
                 jQuery.post('/wp-admin/admin-ajax.php', {
                 action: 'woocommerce_ajax_remove_from_cart2',
                 cart_item_key: item_key
                 }, function(data){
                     //data = JSON.parse(data);
-                    console.log(data);
+                    // console.log(data);
                     let wrap_elelemt = document.getElementsByName("cart["+ item_key +"][lorem]");
                     if(wrap_elelemt[0]){
                         wrap_elelemt[0].checked = false;
