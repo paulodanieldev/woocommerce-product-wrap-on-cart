@@ -97,10 +97,11 @@ class WC_Methods_PWC extends WC_Integration {
 
         $elements = WC()->session->get( 'my_lorem_price');
         $cart_item_key = $atts['cart_item_key'];
-        $product_wrap_id = get_post_meta($atts['product_id'], $this->pwc_acf_wrap_field_name, true);
+        $product_wrap_obj_var = get_post_meta($atts['product_id'], $this->pwc_acf_wrap_field_name, true);
+        $product_wrap_id_var = is_array($product_wrap_obj_var) ? $product_wrap_obj_var[0] : $product_wrap_obj_var;
         // checks if there is product packaging related to it 
-        if((int)$product_wrap_id[0] > 0){
-            $product_wrap_obj = wc_get_product( $product_wrap_id[0] ); 
+        if((int)$product_wrap_id_var > 0){
+            $product_wrap_obj = wc_get_product( $product_wrap_id_var ); 
             $product_wrap_title = $product_wrap_obj->get_title();
             // VERIFICA SE POSSUI EMBALAGEM NO ESTOQUE
             if ($product_wrap_obj->managing_stock() && $product_wrap_obj->is_in_stock()){

@@ -221,10 +221,13 @@ class WC_PWC {
                 $product_id = $cart_item['data']->get_id();
                 $pwc_methods = new WC_Methods_PWC();
                 $pwc_acf_wrap_field_name = $pwc_methods->get_pwc_acf_wrap_field_name();
-                $product_wrap_id = (int)get_post_meta($product_id, $pwc_acf_wrap_field_name, true)[0];
+                //$product_wrap_id = (int)get_post_meta($product_id, $pwc_acf_wrap_field_name, true)[0];
+                $product_wrap_obj_var = get_post_meta($product_id, $pwc_acf_wrap_field_name, true);
+                $product_wrap_id_var = is_array($product_wrap_obj_var) ? $product_wrap_obj_var[0] : $product_wrap_obj_var;
 
                 foreach( WC()->cart->get_cart() as $cart_item_key_w => $cart_item_w ) {
-                    if($cart_item_w['data']->get_id() == $product_wrap_id){
+                    //var_dump($cart_item_w['data']->get_id() , $product_wrap_id_var, ($cart_item_w['data']->get_id() == $product_wrap_id_var));
+                    if($cart_item_w['data']->get_id() == $product_wrap_id_var){
                         $new_qty = $cart_item['quantity'] -1;
                         $resultado = WC()->cart->set_quantity( $cart_item_key_w, $new_qty ); // Change quantity
                         $result = $resultado != false ? ['response' => true, 'mensagem' => $resultado] : ['response' => false, 'mensagem' => $resultado];
@@ -266,8 +269,11 @@ class WC_PWC {
         foreach ( $woocommerce->cart->cart_contents as $cart_item_key => $cart_item ) {
             if ( isset( $lorem_price[ $cart_item_key ]['lorem'] ) ) {
                 $cart_item_obj = wc_get_product($cart_item['data']);
-                $product_wrap_array_id = get_post_meta($cart_item_obj->get_id(), 'embalagem_produto', true);
-                if ($product_wrap_array_id[0] == $product_wrap_id){
+                $pwc_methods = new WC_Methods_PWC();
+                $pwc_acf_wrap_field_name = $pwc_methods->get_pwc_acf_wrap_field_name();
+                $product_wrap_obj_var = get_post_meta($cart_item_obj->get_id(), $pwc_acf_wrap_field_name, true);
+                $product_wrap_id_var = is_array($product_wrap_obj_var) ? $product_wrap_obj_var[0] : $product_wrap_obj_var;
+                if ($product_wrap_id_var == $product_wrap_id){
                     $qtd_checked ++;
                 }
             }
